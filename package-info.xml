@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!DOCTYPE package-info SYSTEM "http://www.simplemachines.org/xml/package-info">
+<package-info xmlns="http://www.simplemachines.org/xml/package-info" xmlns:smf="http://www.simplemachines.org/">
+	<id>live627:karma</id>
+	<name>Karma</name>
+	<version>1.0 Alpha</version>
+	<type>modification</type>
+
+	<install for="2.1 - 2.1.99">
+		<readme type="file" parsebbc="true">install.txt</readme>
+		<credits url="livemods.net" license="MIT" copyright="&copy; 2014">Karma</credits>
+		<hook hook="integrate_modify_features" function="KarmaIntegration::modify_features" file="$sourcedir/Class-Karma.php" />
+		<hook hook="integrate_admin_areas" function="KarmaIntegration::admin_areas" file="$sourcedir/Class-Karma.php" />
+		<hook hook="integrate_actions" function="KarmaIntegration::actions" file="$sourcedir/Class-Karma.php" />
+		<hook hook="integrate_admin_search" function="KarmaIntegration::admin_search" file="$sourcedir/Class-Karma.php" />
+		<hook hook="integrate_load_permissions" function="KarmaIntegration::load_permissions" file="$sourcedir/Class-Karma.php" />
+		<hook hook="integrate_load_permission_levels" function="KarmaIntegration::load_permission_levels" file="$sourcedir/Class-Karma.php" />
+		<hook hook="integrate_load_illegal_guest_permissions" function="KarmaIntegration::illegal_guest_permissions" file="$sourcedir/Class-Karma.php" />
+		<hook hook="integrate_reports_groupperm" function="KarmaIntegration::reports_groupperm" file="$sourcedir/Class-Karma.php" />
+		<hook hook="integrate_member_context" function="KarmaIntegration::member_context" file="$sourcedir/Class-Karma.php" />
+		<database>install.php</database>
+		<require-file name="Class-Karma.php" destination="$sourcedir" />
+		<require-file name="ManageKarma.php" destination="$sourcedir" />
+		<require-file name="Karma.english.php" destination="$languagedir" />
+		<require-file name="ManageKarma.english.php" destination="$languagedir" />
+		<redirect url="?action=admin;area=featuresettings;sa=karma" />
+	</install>
+
+	<uninstall for="2.1 - 2.1.99">
+		<readme type="file" parsebbc="true">uninstall.txt</readme>
+		<remove-file name="$sourcedir/Class-Karma.php" />
+		<remove-file name="$sourcedir/ManageKarma.php" />
+		<remove-file name="$languagedir/Karma.english.php" />
+		<remove-file name="$languagedir/ManageKarma.english.php" />
+	</uninstall>
+
+</package-info>
