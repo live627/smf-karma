@@ -7,6 +7,7 @@ Karma mod for SMF. Get it back if you so desire.
 - Lang strings moved to langauage files where they belong
 
 ### To do
+- Write importer
 - Use AJAX
 - Integrate into the alerts system
 
