@@ -70,7 +70,7 @@ class KarmaIntegration
 			$disabled_permissions[] = 'karma_edit';
 	}
 
-	public static function member_context(&$memID, $display_custom_fields)
+	public static function member_context(&$memData, &$memID, $display_custom_fields)
 	{
 		global $context, $modSettings, $memberContext, $scripturl, $txt;
 		static $karma;
