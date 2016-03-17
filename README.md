@@ -4,7 +4,7 @@ Karma mod for SMF. Get it back if you so desire.
 
 ## Changes
 - Uses custom profile fields
-- Lang strings moved to langauage files where they belong
+- Lang strings moved to language files where they belong
 
 ### To do
 - Write importer
