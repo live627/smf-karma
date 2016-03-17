@@ -19,9 +19,6 @@ $txt['karma_options'] = 'Disable karma|Enable karma total|Enable karma positive/
 $txt['karmaMinPosts'] = 'Set the minimum posts needed to modify karma';
 $txt['karmaWaitTime'] = 'Set wait time in hours';
 $txt['karmaTimeRestrictAdmins'] = 'Restrict administrators to wait time';
-$txt['karmaLabel'] = 'Karma label';
-$txt['karmaApplaudLabel'] = 'Karma applaud label';
-$txt['karmaSmiteLabel'] = 'Karma smite label';
 
 // Permissions
 $txt['permissionname_karma_edit'] = 'Change other people\'s karma';
