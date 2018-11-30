@@ -16,6 +16,11 @@ if (!defined('SMF'))
 
 class KarmaIntegration
 {
+	public static function load_theme()
+	{
+		loadLanguage('Karma+ManageKarma');
+	}
+
 	public static function actions(&$action_array)
 	{
 		$action_array['karma'] = array('Class-Karma.php', 'Karma::init#');
@@ -24,29 +29,32 @@ class KarmaIntegration
 	public static function modify_features(&$subActions)
 	{
 		global $sourcedir;
+
 		require_once($sourcedir . '/ManageKarma.php');
+
 		$subActions['karma'] = 'ModifyKarmaSettings';
 	}
 
 	public static function admin_areas(&$admin_areas)
 	{
 		global $txt;
-		loadLanguage('ManageKarma');
+
 		$admin_areas['config']['areas']['featuresettings']['subsections']['karma'] = array($txt['mods_cat_karma']);
 	}
 
 	public static function admin_search(&$language_files, &$include_files, &$settings_search)
 	{
-		$language_files[] = 'ManageKarma';
-		$include_files[] = 'ManageKarma';
+		$language_files[]  = 'ManageKarma';
+		$include_files[]   = 'ManageKarma';
 		$settings_search[] = array('ModifyKarmaSettings', 'area=featuresettings;sa=karma');
 	}
 
 	public static function load_permissions(&$permissionGroups, &$permissionList, &$leftPermissionGroups, &$hiddenPermissions, &$relabelPermissions)
 	{
 		global $modSettings;
-		loadLanguage('ManageKarma');
+
 		$permissionList['membergroup']['karma_edit'] = array(false, 'general');
+
 		if (empty($modSettings['karmaMode']))
 			$hiddenPermissions[] = 'karma_edit';
 	}
@@ -59,24 +67,24 @@ class KarmaIntegration
 	public static function illegal_guest_permissions()
 	{
 		global $context;
+
 		$context['non_guest_permissions'][] = 'karma_edit';
 	}
 
 	public static function reports_groupperm(&$disabled_permissions)
 	{
 		global $modSettings;
-		loadLanguage('ManageKarma');
+
 		if (empty($modSettings['karmaMode']))
 			$disabled_permissions[] = 'karma_edit';
 	}
 
-	public static function member_context(&$memData, &$memID, $display_custom_fields)
+	public static function member_context(&$memData, $memID, $display_custom_fields)
 	{
 		global $context, $modSettings, $memberContext, $scripturl, $txt;
 		static $karma;
-		loadLanguage('Karma');
-		if (!empty($modSettings['karmaMode']) && $display_custom_fields)
-		{
+
+		if (!empty($modSettings['karmaMode']) && $display_custom_fields) {
 			if (empty($karma[$memID]))
 				$karma = loadMemberCustomFields($memID, array('karma_good', 'karma_bad'));
 
@@ -93,18 +101,19 @@ class KarmaIntegration
 				$value = '+' . $karma[$memID]['karma_good']['value'] . ' / -' .  $karma[$memID]['karma_bad']['value'];
 
 			$memberContext[$memID]['custom_fields'][] = array(
-				'title' => $txt['karma'],
-				'col_name' => 'karma',
-				'value' => $value,
-				'placement' => 6,
+				'title'     => $txt['karma'],
+				'col_name'  => 'karma',
+				'value'     => $value,
+				'placement' => 6
 			);
+
 			$memberContext[$memID]['custom_fields'][] = array(
-				'title' => '',
-				'col_name' => 'karma_labels',
-				'value' => '
-									<a href="' . $scripturl . '?action=karma;sa=applaud;uid=' . $memID . ';' . $context['session_var'] . '=' . $context['session_id'] . '">' . $txt['karmaApplaudLabel'] . '</a>
-									<a href="' . $scripturl . '?action=karma;sa=smite;uid=' . $memID . ';' . $context['session_var'] . '=' . $context['session_id'] . '">' . $txt['karmaSmiteLabel'] . '</a>',
-				'placement' => 6,
+				'title'     => '',
+				'col_name'  => 'karma_labels',
+				'value'     => '
+					<a href = "' . $scripturl . '?action=karma;sa=applaud;uid=' . $memID . ';' . $context['session_var'] . '=' . $context['session_id'] . '">' . $txt['karmaApplaudLabel'] . '</a>
+					<a href = "' . $scripturl . '?action=karma;sa=smite;uid=' . $memID . ';' . $context['session_var'] . '=' . $context['session_id'] . '">' . $txt['karmaSmiteLabel'] . '</a>',
+				'placement' =>  6
 			);
 		}
 	}
@@ -151,7 +160,7 @@ class Karma
 		// Applauding or smiting?
 		$dir = $_REQUEST['sa'] != 'applaud' ? -1 : 1;
 
-		if (($dir == 1 && empty($modSettings['karmaApplaudLabel'])) || ($dir == -1 && empty($modSettings['karmaSmiteLabel'])))
+		if (($dir == 1 && empty($txt['karmaApplaudLabel'])) || ($dir == -1 && empty($txt['karmaSmiteLabel'])))
 			fatal_lang_error('feature_disabled', false);
 
 		// Delete any older items from the log. (karmaWaitTime is by hour.)
@@ -159,8 +168,8 @@ class Karma
 			DELETE FROM {db_prefix}log_karma
 			WHERE {int:current_time} - log_time > {int:wait_time}',
 			array(
-				'wait_time' => (int) ($modSettings['karmaWaitTime'] * 3600),
-				'current_time' => time(),
+				'wait_time'    => (int) ($modSettings['karmaWaitTime'] * 3600),
+				'current_time' => time()
 			)
 		);
 
@@ -168,8 +177,7 @@ class Karma
 		$action = 0;
 
 		// Not an administrator... or one who is restricted as well.
-		if (!empty($modSettings['karmaTimeRestrictAdmins']) || !allowedTo('moderate_forum'))
-		{
+		if (!empty($modSettings['karmaTimeRestrictAdmins']) || !allowedTo('moderate_forum')) {
 			// Find out if this user has done this recently...
 			$request = $smcFunc['db_query']('', '
 				SELECT action
@@ -179,9 +187,10 @@ class Karma
 				LIMIT 1',
 				array(
 					'current_member' => $user_info['id'],
-					'id_target' => $memID,
+					'id_target'      => $memID
 				)
 			);
+
 			if ($smcFunc['db_num_rows']($request) > 0)
 				list ($action) = $smcFunc['db_fetch_row']($request);
 			$smcFunc['db_free_result']($request);
@@ -201,8 +210,7 @@ class Karma
 		$value = $karma[$memID][$col_name]['value'] + 1;
 
 		// They haven't, not before now, anyhow.
-		if (empty($action) || empty($modSettings['karmaWaitTime']))
-		{
+		if (empty($action) || empty($modSettings['karmaWaitTime'])) {
 			// Put it in the log.
 			$smcFunc['db_insert']('replace',
 				'{db_prefix}log_karma',
@@ -216,15 +224,14 @@ class Karma
 				'action' => $col_name,
 				'log_type' => 'user',
 				'extra' => array(
-					'value' => $value,
-					'applicator' => $user_info['id'],
-					'member_affected' => $memID,
-				),
+					'value'           => $value,
+					'applicator'      => $user_info['id'],
+					'member_affected' => $memID
+				)
 			);
+
 			$changes[] = array(1, $col_name, $value, $memID);
-		}
-		else
-		{
+		} else {
 			// If you are gonna try to repeat.... don't allow it.
 			if ($action == $dir)
 				fatal_lang_error('karma_wait_time', false, array($modSettings['karmaWaitTime'], ($modSettings['karmaWaitTime'] == 1 ? strtolower($txt['hour']) : $txt['hours'])));
@@ -237,9 +244,9 @@ class Karma
 					AND id_executor = {int:current_member}',
 				array(
 					'current_member' => $user_info['id'],
-					'action' => $dir,
-					'current_time' => time(),
-					'id_target' => $memID,
+					'action'         => $dir,
+					'current_time'   => time(),
+					'id_target'      => $memID
 				)
 			);
 
@@ -248,36 +255,34 @@ class Karma
 				'action' => $col_name,
 				'log_type' => 'user',
 				'extra' => array(
-					'value' => $value,
-					'applicator' => $user_info['id'],
-					'member_affected' => $memID,
-				),
+					'value'           => $value,
+					'applicator'      => $user_info['id'],
+					'member_affected' => $memID
+				)
 			);
+
 			$changes[] = array(1, $col_name, $value, $memID);
 			$changes[] = array(1, $dir == 1 ? 'karma_good' : 'karma_bad', $karma[$memID][$dir == 1 ? 'karma_good' : 'karma_bad']['value'] - 1, $memID);
 		}
 
 		// Make those changes!
-		if (!empty($changes))
-		{
+		if (!empty($changes)) {
 			$smcFunc['db_insert']('replace',
 				'{db_prefix}themes',
 				array('id_theme' => 'int', 'variable' => 'string-255', 'value' => 'string-65534', 'id_member' => 'int'),
 				$changes,
 				array('id_theme', 'variable', 'id_member')
 			);
-			if (!empty($log_changes) && !empty($modSettings['modlog_enabled']))
-			{
+
+			if (!empty($log_changes) && !empty($modSettings['modlog_enabled'])) {
 				require_once($sourcedir . '/Logging.php');
 				logActions($log_changes);
 			}
 		}
 
-		if (true)//isset($_REQUEST['f']))
-			redirectexit();
-		// JavaScript as a last resort.
-		else
-		{
+		if (true)
+			redirectexit($_SERVER['HTTP_REFERER']);
+		else {
 			echo '<!DOCTYPE html>
 	<html', $context['right_to_left'] ? ' dir="rtl"' : '', '>
 		<head>
@@ -293,5 +298,3 @@ class Karma
 		}
 	}
 }
-
-?>
