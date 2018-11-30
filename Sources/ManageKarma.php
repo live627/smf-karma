@@ -24,20 +24,19 @@ function ModifyKarmaSettings($return_config = false)
 {
 	global $txt, $scripturl, $context, $modSettings;
 
-	loadLanguage('Karma+ManageKarma');
 	if (empty($modSettings['karmaMode']))
 		$config_vars = array(
-			array('select', 'karmaMode', explode('|', $txt['karma_options'])),
+			array('select', 'karmaMode', explode('|', $txt['karma_options']))
 		);
 	else
 		$config_vars = array(
-				// Karma - On or off?
-				array('select', 'karmaMode', explode('|', $txt['karma_options'])),
+			// Karma - On or off?
+			array('select', 'karmaMode', explode('|', $txt['karma_options'])),
 			'',
-				// Who can do it.... and who is restricted by time limits?
-				array('int', 'karmaMinPosts', 6, 'postinput' => strtolower($txt['posts'])),
-				array('float', 'karmaWaitTime', 6, 'postinput' => $txt['hours']),
-				array('check', 'karmaTimeRestrictAdmins'),
+			// Who can do it.... and who is restricted by time limits?
+			array('int', 'karmaMinPosts', 6, 'postinput' => strtolower($txt['posts'])),
+			array('float', 'karmaWaitTime', 6, 'postinput' => $txt['hours']),
+			array('check', 'karmaTimeRestrictAdmins')
 		);
 
 	call_integration_hook('integrate_karma_settings', array(&$config_vars));
@@ -46,8 +45,7 @@ function ModifyKarmaSettings($return_config = false)
 		return $config_vars;
 
 	// Saving?
-	if (isset($_GET['save']))
-	{
+	if (isset($_GET['save'])) {
 		checkSession();
 
 		call_integration_hook('integrate_save_karma_settings');
@@ -63,5 +61,3 @@ function ModifyKarmaSettings($return_config = false)
 	loadLanguage('ManageKarma');
 	prepareDBSettingContext($config_vars);
 }
-
-?>
