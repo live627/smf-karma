@@ -44,8 +44,8 @@ class KarmaIntegration
 
 	public static function admin_search(&$language_files, &$include_files, &$settings_search)
 	{
-		$language_files[]  = 'ManageKarma';
-		$include_files[]   = 'ManageKarma';
+		$language_files[] = 'ManageKarma';
+		$include_files[] = 'ManageKarma';
 		$settings_search[] = array('ModifyKarmaSettings', 'area=featuresettings;sa=karma');
 	}
 
@@ -84,7 +84,8 @@ class KarmaIntegration
 		global $context, $modSettings, $memberContext, $scripturl, $txt;
 		static $karma;
 
-		if (!empty($modSettings['karmaMode']) && $display_custom_fields) {
+		if (!empty($modSettings['karmaMode']) && $display_custom_fields)
+		{
 			if (empty($karma[$memID]))
 				$karma = loadMemberCustomFields($memID, array('karma_good', 'karma_bad'));
 
@@ -98,22 +99,22 @@ class KarmaIntegration
 			if ($modSettings['karmaMode'] == 1)
 				$value = $karma[$memID]['karma_good']['value'] - $karma[$memID]['karma_bad']['value'];
 			elseif ($modSettings['karmaMode'] == 2)
-				$value = '+' . $karma[$memID]['karma_good']['value'] . ' / -' .  $karma[$memID]['karma_bad']['value'];
+				$value = '+' . $karma[$memID]['karma_good']['value'] . ' / -' . $karma[$memID]['karma_bad']['value'];
 
 			$memberContext[$memID]['custom_fields'][] = array(
-				'title'     => $txt['karma'],
-				'col_name'  => 'karma',
-				'value'     => $value,
-				'placement' => 6
+				'title' => $txt['karma'],
+				'col_name' => 'karma',
+				'value' => $value,
+				'placement' => 6,
 			);
 
 			$memberContext[$memID]['custom_fields'][] = array(
-				'title'     => '',
-				'col_name'  => 'karma_labels',
-				'value'     => '
+				'title' => '',
+				'col_name' => 'karma_labels',
+				'value' => '
 					<a href = "' . $scripturl . '?action=karma;sa=applaud;uid=' . $memID . ';' . $context['session_var'] . '=' . $context['session_id'] . '">' . $txt['karmaApplaudLabel'] . '</a>
 					<a href = "' . $scripturl . '?action=karma;sa=smite;uid=' . $memID . ';' . $context['session_var'] . '=' . $context['session_id'] . '">' . $txt['karmaSmiteLabel'] . '</a>',
-				'placement' =>  6
+				'placement' => 6,
 			);
 		}
 	}
@@ -164,12 +165,14 @@ class Karma
 			fatal_lang_error('feature_disabled', false);
 
 		// Delete any older items from the log. (karmaWaitTime is by hour.)
-		$smcFunc['db_query']('', '
+		$smcFunc['db_query'](
+			'',
+			'
 			DELETE FROM {db_prefix}log_karma
 			WHERE {int:current_time} - log_time > {int:wait_time}',
 			array(
-				'wait_time'    => (int) ($modSettings['karmaWaitTime'] * 3600),
-				'current_time' => time()
+				'wait_time' => (int) ($modSettings['karmaWaitTime'] * 3600),
+				'current_time' => time(),
 			)
 		);
 
@@ -177,9 +180,12 @@ class Karma
 		$action = 0;
 
 		// Not an administrator... or one who is restricted as well.
-		if (!empty($modSettings['karmaTimeRestrictAdmins']) || !allowedTo('moderate_forum')) {
+		if (!empty($modSettings['karmaTimeRestrictAdmins']) || !allowedTo('moderate_forum'))
+		{
 			// Find out if this user has done this recently...
-			$request = $smcFunc['db_query']('', '
+			$request = $smcFunc['db_query'](
+				'',
+				'
 				SELECT action
 				FROM {db_prefix}log_karma
 				WHERE id_target = {int:id_target}
@@ -187,7 +193,7 @@ class Karma
 				LIMIT 1',
 				array(
 					'current_member' => $user_info['id'],
-					'id_target'      => $memID
+					'id_target' => $memID,
 				)
 			);
 
@@ -210,9 +216,11 @@ class Karma
 		$value = $karma[$memID][$col_name]['value'] + 1;
 
 		// They haven't, not before now, anyhow.
-		if (empty($action) || empty($modSettings['karmaWaitTime'])) {
+		if (empty($action) || empty($modSettings['karmaWaitTime']))
+		{
 			// Put it in the log.
-			$smcFunc['db_insert']('replace',
+			$smcFunc['db_insert'](
+				'replace',
 				'{db_prefix}log_karma',
 				array('action' => 'int', 'id_target' => 'int', 'id_executor' => 'int', 'log_time' => 'int'),
 				array($dir, $memID, $user_info['id'], time()),
@@ -224,29 +232,40 @@ class Karma
 				'action' => $col_name,
 				'log_type' => 'user',
 				'extra' => array(
-					'value'           => $value,
-					'applicator'      => $user_info['id'],
-					'member_affected' => $memID
-				)
+					'value' => $value,
+					'applicator' => $user_info['id'],
+					'member_affected' => $memID,
+				),
 			);
 
 			$changes[] = array(1, $col_name, $value, $memID);
-		} else {
+		}
+		else
+		{
 			// If you are gonna try to repeat.... don't allow it.
 			if ($action == $dir)
-				fatal_lang_error('karma_wait_time', false, array($modSettings['karmaWaitTime'], ($modSettings['karmaWaitTime'] == 1 ? strtolower($txt['hour']) : $txt['hours'])));
+				fatal_lang_error(
+					'karma_wait_time',
+					false,
+					array(
+						$modSettings['karmaWaitTime'],
+						($modSettings['karmaWaitTime'] == 1 ? strtolower($txt['hour']) : $txt['hours']),
+					)
+				);
 
 			// You decided to go back on your previous choice?
-			$smcFunc['db_query']('', '
+			$smcFunc['db_query'](
+				'',
+				'
 				UPDATE {db_prefix}log_karma
 				SET action = {int:action}, log_time = {int:current_time}
 				WHERE id_target = {int:id_target}
 					AND id_executor = {int:current_member}',
 				array(
 					'current_member' => $user_info['id'],
-					'action'         => $dir,
-					'current_time'   => time(),
-					'id_target'      => $memID
+					'action' => $dir,
+					'current_time' => time(),
+					'id_target' => $memID,
 				)
 			);
 
@@ -255,26 +274,34 @@ class Karma
 				'action' => $col_name,
 				'log_type' => 'user',
 				'extra' => array(
-					'value'           => $value,
-					'applicator'      => $user_info['id'],
-					'member_affected' => $memID
-				)
+					'value' => $value,
+					'applicator' => $user_info['id'],
+					'member_affected' => $memID,
+				),
 			);
 
 			$changes[] = array(1, $col_name, $value, $memID);
-			$changes[] = array(1, $dir == 1 ? 'karma_good' : 'karma_bad', $karma[$memID][$dir == 1 ? 'karma_good' : 'karma_bad']['value'] - 1, $memID);
+			$changes[] = array(
+				1,
+				$dir == 1 ? 'karma_good' : 'karma_bad',
+				$karma[$memID][$dir == 1 ? 'karma_good' : 'karma_bad']['value'] - 1,
+				$memID,
+			);
 		}
 
 		// Make those changes!
-		if (!empty($changes)) {
-			$smcFunc['db_insert']('replace',
+		if (!empty($changes))
+		{
+			$smcFunc['db_insert'](
+				'replace',
 				'{db_prefix}themes',
 				array('id_theme' => 'int', 'variable' => 'string-255', 'value' => 'string-65534', 'id_member' => 'int'),
 				$changes,
 				array('id_theme', 'variable', 'id_member')
 			);
 
-			if (!empty($log_changes) && !empty($modSettings['modlog_enabled'])) {
+			if (!empty($log_changes) && !empty($modSettings['modlog_enabled']))
+			{
 				require_once($sourcedir . '/Logging.php');
 				logActions($log_changes);
 			}
@@ -282,7 +309,8 @@ class Karma
 
 		if (true)
 			redirectexit($_SERVER['HTTP_REFERER']);
-		else {
+		else
+		{
 			echo '<!DOCTYPE html>
 	<html', $context['right_to_left'] ? ' dir="rtl"' : '', '>
 		<head>
