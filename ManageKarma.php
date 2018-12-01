@@ -19,6 +19,8 @@ if (!defined('SMF'))
  * Accessed  from ?action=admin;area=featuresettings;sa=karma;
  *
  * @param $return_config
+ *
+ * @return array
  */
 function ModifyKarmaSettings($return_config = false)
 {
