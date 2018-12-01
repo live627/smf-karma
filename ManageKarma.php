@@ -4,11 +4,11 @@
  * Karma
  *
  * This is the main file, handles the hooks, the actions, permissions, load needed files, etc.
- * @package Karma mod
- * @version 1.0 Alpha
- * @author John Rayes <live627@gmail.com>
+ * @package   Karma mod
+ * @version   1.0 Alpha
+ * @author    John Rayes <live627@gmail.com>
  * @copyright Copyright (c) 2014, John Rayes
- * @license http://opensource.org/licenses/MIT MIT
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 if (!defined('SMF'))

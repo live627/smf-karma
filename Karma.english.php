@@ -4,11 +4,11 @@
  * Karma.english
  *
  * The purpose of this file is to fill the language entries with English.
- * @package Karma mod
- * @version 1.0 Alpha
- * @author John Rayes <live627@gmail.com>
+ * @package   Karma mod
+ * @version   1.0 Alpha
+ * @author    John Rayes <live627@gmail.com>
  * @copyright Copyright (c) 2014, John Rayes
- * @license http://opensource.org/licenses/MIT MIT
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 // General Strings
