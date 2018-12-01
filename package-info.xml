@@ -3,12 +3,12 @@
 <package-info xmlns="http://www.simplemachines.org/xml/package-info" xmlns:smf="http://www.simplemachines.org/">
 	<id>live627:karma</id>
 	<name>Karma</name>
-	<version>1.0 Alpha</version>
+	<version>1.0</version>
 	<type>modification</type>
 
-	<install for="SMF 2.1 Beta 4, 2.1 - 2.1.99">
-		<readme type="file" parsebbc="true">install.txt</readme>
-		<credits url="livemods.net" license="MIT" copyright="&copy; 2014 - 2018">Karma</credits>
+	<install for="2.1 Beta 4, 2.1 - 2.1.99">
+		<readme parsebbc="true">install.txt</readme>
+		<credits url="livemods.net" license="MIT" copyright="2014 - 2018">Karma</credits>
 		<hook hook="integrate_modify_features" function="KarmaIntegration::modify_features" file="$sourcedir/Class-Karma.php" />
 		<hook hook="integrate_admin_areas" function="KarmaIntegration::admin_areas" file="$sourcedir/Class-Karma.php" />
 		<hook hook="integrate_load_theme" function="KarmaIntegration::load_theme" file="$sourcedir/Class-Karma.php" />
@@ -20,12 +20,16 @@
 		<hook hook="integrate_reports_groupperm" function="KarmaIntegration::reports_groupperm" file="$sourcedir/Class-Karma.php" />
 		<hook hook="integrate_member_context" function="KarmaIntegration::member_context" file="$sourcedir/Class-Karma.php" />
 		<database>install.php</database>
-		<require-dir name="Sources" destination="$boarddir" />
-		<require-dir name="Themes" destination="$boarddir" />
-		<redirect url="?action=admin;area=featuresettings;sa=karma" />
+		<require-file name="Class-Karma.php" destination="$sourcedir" />
+		<require-file name="ManageKarma.php" destination="$sourcedir" />
+		<require-file name="Karma.english.php" destination="$languagedir" />
+		<require-file name="Karma.russianrussian.php" destination="$languagedir" />
+		<require-file name="ManageKarma.english.php" destination="$languagedir" />
+		<require-file name="ManageKarma.russian.php" destination="$languagedir" />
+		<redirect url="ation=admin;area=featuresettings;sa=karma" />
 	</install>
 
-	<uninstall for="SMF 2.1 Beta 4, 2.1 - 2.1.99">
+	<uninstall for="2.1 Beta 4, 2.1 - 2.1.99">
 		<hook hook="integrate_modify_features" function="KarmaIntegration::modify_features" file="$sourcedir/Class-Karma.php" reverse="true" />
 		<hook hook="integrate_admin_areas" function="KarmaIntegration::admin_areas" file="$sourcedir/Class-Karma.php" reverse="true" />
 		<hook hook="integrate_load_theme" function="KarmaIntegration::load_theme" file="$sourcedir/Class-Karma.php" reverse="true" />
