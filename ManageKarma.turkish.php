@@ -22,7 +22,7 @@ $txt['karmaTimeRestrictAdmins'] = 'Yöneticilerinde bekleme süresini kısıtlay
 
 // Permissions
 $txt['permissionname_karma_edit'] = 'Başkalarının karmalarını değiştir';
-$txt['permissionhelp_karma_edit'] = 'Karma, bir üyenin popülaritesini gösteren bir özelliktir. Bu özelliği kullanabilmek için, \ 'Özellikler ve Seçenekler \' seçeneğinde etkinleştirmeniz gerekir. Bu izin, bir üye grubunun oy kullanmasına izin verecektir. Bu iznin ziyaretçilere etkisi yoktur.';
+$txt['permissionhelp_karma_edit'] = 'Karma, bir üyenin popülaritesini gösteren bir özelliktir. Bu özelliği kullanabilmek için, \'Özellikler ve Seçenekler \' seçeneğinde etkinleştirmeniz gerekir. Bu izin, bir üye grubunun oy kullanmasına izin verecektir. Bu iznin ziyaretçilere etkisi yoktur.';
 
 // Reports
 $txt['group_perms_name_karma_edit'] = 'Başkalarının karmalarını değiştir';
