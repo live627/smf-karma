@@ -23,10 +23,10 @@
 		<require-file name="Class-Karma.php" destination="$sourcedir" />
 		<require-file name="ManageKarma.php" destination="$sourcedir" />
 		<require-file name="Karma.english.php" destination="$languagedir" />
-		<require-file name="Karma.russianrussian.php" destination="$languagedir" />
+		<require-file name="Karma.russian.php" destination="$languagedir" />
 		<require-file name="ManageKarma.english.php" destination="$languagedir" />
 		<require-file name="ManageKarma.russian.php" destination="$languagedir" />
-		<redirect url="ation=admin;area=featuresettings;sa=karma" />
+		<redirect url="?action=admin;area=featuresettings;sa=karma" />
 	</install>
 
 	<uninstall for="2.1 Beta 4, 2.1 - 2.1.99">
