@@ -87,7 +87,7 @@ class KarmaIntegration
 		if (!empty($modSettings['karmaMode']) && $display_custom_fields)
 		{
 			if (empty($karma[$memID]))
-				$karma = loadMemberCustomFields($memID, array('karma_good', 'karma_bad'));
+				$karma = loadMemberCustomFields(array($memID), array('karma_good', 'karma_bad'));
 
 			if (empty($karma[$memID]['karma_good']['value']))
 				$karma[$memID]['karma_good']['value'] = 0;
@@ -202,7 +202,7 @@ class Karma
 			$smcFunc['db_free_result']($request);
 		}
 
-		$karma = loadMemberCustomFields($memID, array('karma_good', 'karma_bad'));
+		$karma = loadMemberCustomFields(array($memID), array('karma_good', 'karma_bad'));
 
 		if (empty($karma[$memID]['karma_good']['value']))
 			$karma[$memID]['karma_good']['value'] = 0;
